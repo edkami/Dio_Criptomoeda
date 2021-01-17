@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoinMarketCap</title>
+    <link rel="stylesheet" type="text/css" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Image and text -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+        <img src="https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco/wofdlfjz50ixudmcvdcq" width="30" height="30" class="d-inline-block align-top" alt="">
+        CoinMarketCap
+        </a>
+    </nav>
+    <div class="d-flex p-3 bd-highlight">
+        <div id="coins">
+        </div>
+    </div>
+    <script type="text/javascript">
+        //Insert api key
+        var apikey = {
+            key: '05a8330d-9c5b-4ae4-ac6e-47be352847be'
+        }
+         //GET Fetch Requisition
+         fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + 
+         apikey.key)
+         .then((response) => {
+             if(!response.ok) throw new Error('Erro ao executar a requisição, status ' + response.status);
+             return response.json();
+         })
+         .then((api) => {
+
+             var texto = "";
+             //Get 10 coins and symbols
+             for(let i=0; i < 10; i++){
+
+
+                 //Show API information
+
+                 texto = texto + `
+                 <div class="media">
+                 <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/${api.data[i].id}.png" class="align-self-center mr-3" alt="coin" width="70" height="60">
+                 <div class"media-body">
+                 <h5 class="mt-2">${api.data[i].name}</h5>
+                 <p>${api.data[i].symbol}</p>
+                 </div>
+             </div>
+             
+             `;
+             
+             document.getElementById("coins").innerHTML = texto;
+             
+             
+             }
+
+         })
+             .catch((error) => {
+                 console.error(error.message);
+             });
+    </script>
+</body>
+</html>
